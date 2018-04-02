@@ -20,7 +20,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>main.java.com.bwarner.WebServer</mainClass>
+							<mainClass>com.bwarner.WebServer</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
