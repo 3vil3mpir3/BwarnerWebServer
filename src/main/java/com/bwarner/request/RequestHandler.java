@@ -3,9 +3,6 @@ package com.bwarner.request;
 import java.io.*;
 import java.net.Socket;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.httpclient.HttpStatus;
 
 import org.apache.logging.log4j.LogManager;
