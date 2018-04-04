@@ -56,12 +56,16 @@ public class WebServer extends Thread {
 				ServerSocket socket = new ServerSocket(portNumber);
 				System.out.println("Web server working on port " + portNumber + " with " + threads +" threads.");
 				ExecutorService executor = Executors.newFixedThreadPool(threads);
-		do{
-			try{ executor.submit(new ConnectionHandler(socket.accept())); } catch (IOException e){
-				bwlog.error("Exeutor Error", e);	
+				do{
+					try{
+						long threadId = Thread.currentThread().getId();
+						System.out.println("requesting with thread: "+threadId);
+						executor.submit(new ConnectionHandler(socket.accept()));
+					} catch (IOException e){
+						bwlog.error("Exeutor Error", e);
+					}
+				} while(true);
 			}
-		} while(true);
-	}
 
 
 }
