@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.bwarner.request.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,9 +61,9 @@ public class WebServer extends Thread {
 					try{
 						long threadId = Thread.currentThread().getId();
 						System.out.println("requesting with thread: "+threadId);
-						executor.submit(new ConnectionHandler(socket.accept()));
+						executor.submit(new RequestHandler(socket.accept()));
 					} catch (IOException e){
-						bwlog.error("Exeutor Error", e);
+						bwlog.error("Executor Error", e);
 					}
 				} while(true);
 			}
