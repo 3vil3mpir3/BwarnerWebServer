@@ -38,8 +38,8 @@ public class RequestHandler implements Runnable{
         OutputStream ostream = assignedsocket.getOutputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(istream));
         File requestedfile = Utils.getFile(reader, ROOT);
+
         if(requestedfile.exists()){
-            bwlog.info("Serving request for " + requestedfile.getName() + " from " + ROOT);
             ResponseBuilder.processOutput(ostream, HttpStatus.SC_OK, requestedfile);
         }else{
             ResponseBuilder.processOutput(ostream, HttpStatus.SC_NOT_FOUND, FOUR_OH_FOUR);
