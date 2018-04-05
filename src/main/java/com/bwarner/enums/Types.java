@@ -1,5 +1,7 @@
 package com.bwarner.enums;
 
+/** Borrowed this from elsewhere, added additional types just because **/
+
 public enum Types {
 
     CSS("CSS"),

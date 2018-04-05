@@ -1,11 +1,12 @@
 package com.bwarner;
 
+import com.bwarner.request.RequestHandler;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.bwarner.request.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,12 +21,14 @@ public class WebServer extends Thread {
 
 			/** set helper text, get params **/
 			public static void main(String args[]) {
+
 				if (args.length == 0 || args[0].equals("-help")) {
 					System.out.println("Valid usage: java -jar bwarner-Webserver-0.1-jar-with-dependencies.jar <port> 1025-65535 <threads> 1-10");
 				}else{
 					bwlog.info("Server starting...");
-					WebServer.getParameters(args);
+					getParameters(args);
 				}
+
 			}
 
 			/** get params, set param limits and return defaults if limits exceeded. I've limited the ports to a specific range and threads to <10 **/
@@ -57,16 +60,15 @@ public class WebServer extends Thread {
 				ServerSocket socket = new ServerSocket(portNumber);
 				System.out.println("Web server working on port " + portNumber + " with " + threads +" threads.");
 				ExecutorService executor = Executors.newFixedThreadPool(threads);
+
 				do{
 					try{
 						long threadId = Thread.currentThread().getId();
-						System.out.println("requesting with thread: "+threadId);
 						executor.submit(new RequestHandler(socket.accept()));
 					} catch (IOException e){
 						bwlog.error("Executor Error", e);
 					}
 				} while(true);
+
 			}
-
-
 }

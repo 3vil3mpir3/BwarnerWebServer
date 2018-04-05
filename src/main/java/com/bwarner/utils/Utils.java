@@ -7,31 +7,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.StringTokenizer;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public final class Utils {
 
-    private static Logger bwlog = LogManager.getLogger(Utils.class);
-
+    /** returns requested file based on path **/
     public static File getFile(BufferedReader reader, String dir) throws IOException{
         return new File(dir+getFilename(reader));
     }
 
+    /** extracts and returns requested file name **/
     private static String getFilename (BufferedReader reader) throws IOException{
-        String requeststring = reader.readLine();
-        StringTokenizer tokens = new StringTokenizer(requeststring);
+        String requestString = reader.readLine();
+        StringTokenizer tokens = new StringTokenizer(requestString);
         tokens.nextToken();
         return tokens.nextToken();
     }
 
-    public static String getMimeType(final File file)
+    /** Returns file extension of request. Used to determine content type. **/
+    public static String getFileExtension(final File file)
     {
         String extension = file.getName();
         extension= extension.substring(extension.lastIndexOf(".")+1,extension.length()).toUpperCase();
@@ -43,10 +38,12 @@ public final class Utils {
         byte[] array = new byte[length];
         InputStream in = new FileInputStream(file);
         int offset = 0;
+        
         while (offset < length) {
             int count = in.read(array, offset, (length - offset));
             offset += count;
         }
+
         in.close();
         return array;
     }
