@@ -1,5 +1,6 @@
 package com.bwarner.request;
 
+import com.bwarner.enums.Methods;
 import com.bwarner.response.ResponseBuilder;
 import com.bwarner.utils.Utils;
 
@@ -19,9 +20,8 @@ public class RequestHandler implements Runnable{
     /** Socket **/
     private Socket assignedSocket;
 
-    /** Constants for web root and 404 location page **/
+    /** Constant for web directory **/
     private final static String ROOT = "../www/";
-    private final static File FOUR_OH_FOUR = new File (ROOT+"404.html");
 
     public RequestHandler(Socket socket) {
         this.assignedSocket = socket;
@@ -33,15 +33,34 @@ public class RequestHandler implements Runnable{
         OutputStream ostream = assignedSocket.getOutputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(istream));
         File requestedFile = Utils.getFile(reader, ROOT);
+        String requestMethod = Utils.getMethod(reader);
+        Utils.resetReader();
 
-        if(requestedFile.exists()){
-            ResponseBuilder.processOutput(ostream, HttpStatus.SC_OK, requestedFile);
-        }else{
-            ResponseBuilder.processOutput(ostream, HttpStatus.SC_NOT_FOUND, FOUR_OH_FOUR);
-            bwlog.info("Request for " + requestedFile.getName() + " from " + ROOT + " failed.  Serving 404 page.");
+        switch (Methods.valueOf(requestMethod)){
+            case GET:
+                if(requestedFile.exists()){
+                    bwlog.info("Serving: "+ requestedFile.getName() + " lfrom " + ROOT);
+                    ResponseBuilder.preprocessOutput(ostream, HttpStatus.SC_OK, requestedFile);
+                }else{
+                    bwlog.error("Request for " + requestedFile.getName() + " from " + ROOT + " failed.  Serving 404 page.");
+                    ResponseBuilder.preprocessOutput(ostream, HttpStatus.SC_NOT_FOUND, Utils.getErrorMessage(requestedFile.getName()));
+                }
+                break;
+            case HEAD:
+                ResponseBuilder.preprocessOutput(ostream, HttpStatus.SC_OK, "");
+                break;
+            case TRACE:
+                ResponseBuilder.preprocessOutput(ostream, HttpStatus.SC_OK, reader.readLine());
+                break;
+            case UNRECOGNIZED:
+                ResponseBuilder.preprocessOutput(ostream, HttpStatus.SC_BAD_REQUEST, Utils.getErrorMessage(requestedFile.getName()));
+                break;
+            default:
+                ResponseBuilder.preprocessOutput(ostream, HttpStatus.SC_NOT_IMPLEMENTED, "");
         }
 
     }
+
 
     /** Run **/
     public void run(){

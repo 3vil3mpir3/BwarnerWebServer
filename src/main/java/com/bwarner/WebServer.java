@@ -63,7 +63,6 @@ public class WebServer extends Thread {
 
 				do{
 					try{
-						long threadId = Thread.currentThread().getId();
 						executor.submit(new RequestHandler(socket.accept()));
 					} catch (IOException e){
 						bwlog.error("Executor Error", e);
