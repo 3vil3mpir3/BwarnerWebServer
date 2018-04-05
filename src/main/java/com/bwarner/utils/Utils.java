@@ -1,5 +1,6 @@
 package com.bwarner.utils;
 
+import com.bwarner.enums.Methods;
 import com.bwarner.enums.Types;
 
 import java.io.BufferedReader;
@@ -10,8 +11,10 @@ import java.io.IOException;
 
 public final class Utils {
 
-    /** String var for the bufferedreader first readline. hacky solution to resetting. **/
-    public static String[] thisRead;
+    /** return first line from reader for use in file request and method **/
+    public static String[] getBufferLines(BufferedReader reader) throws IOException{
+        return reader.readLine().split("\\s+");
+    }
 
     /** 404 message. **/
     public static String getErrorMessage(String page){
@@ -19,11 +22,8 @@ public final class Utils {
     }
 
     /** returns requested file based on path **/
-    public static File getFile(BufferedReader reader, String dir) throws IOException{
-        if(thisRead==null){
-            setRequestString(reader);
-        }
-        return new File(dir+thisRead[1]);
+    public static File getFile(String filePath, String dir) throws IOException{
+        return new File(dir+filePath);
     }
 
     /** returns file bytes **/
@@ -51,21 +51,10 @@ public final class Utils {
     }
 
     /** returns requested file based on path **/
-    public static String getMethod(BufferedReader reader) throws IOException{
-        if(thisRead==null){
-            setRequestString(reader);
-        }
-        return thisRead[0];
+
+    public static Methods getMethod(String requestedHeader) throws IOException{
+        return Methods.valueOf(requestedHeader);
     }
 
-    /** End of hacky buffered reader hacky solution. blah. **/
-    public static void resetReader(){
-        thisRead=null;
-    }
-
-    /** extracts and returns requested file name **/
-    private static void setRequestString (BufferedReader reader) throws IOException{
-        thisRead = reader.readLine().split("\\s+");
-    }
 
 }

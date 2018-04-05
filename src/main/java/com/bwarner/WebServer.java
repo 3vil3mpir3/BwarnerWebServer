@@ -31,7 +31,7 @@ public class WebServer extends Thread {
 
 			}
 
-			/** get params, set param limits and return defaults if limits exceeded. I've limited the ports to a specific range and threads to <10 **/
+			/** get startup params, set param limits and return defaults if limits exceeded. I've limited the ports to a specific range and threads to <10 **/
 			private static void getParameters(String args[]){
 				int portNumber = DEFAULT_PORT;
 				int threads = DEFAULT_THREADS;
@@ -55,7 +55,7 @@ public class WebServer extends Thread {
 				}
 			}
 
-			/** start server with valid arguments for port number and fixes the thread pool **/
+			/** start server with valid arguments for port number and fixes the thread pool. I found this methodology in a few examples and liked it. **/
 			private void startServer(int portNumber, int threads) throws IOException {
 				ServerSocket socket = new ServerSocket(portNumber);
 				System.out.println("Web server working on port " + portNumber + " with " + threads +" threads.");

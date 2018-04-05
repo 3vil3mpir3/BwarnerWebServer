@@ -32,11 +32,12 @@ public class RequestHandler implements Runnable{
         InputStream istream = assignedSocket.getInputStream();
         OutputStream ostream = assignedSocket.getOutputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(istream));
-        File requestedFile = Utils.getFile(reader, ROOT);
-        String requestMethod = Utils.getMethod(reader);
-        Utils.resetReader();
 
-        switch (Methods.valueOf(requestMethod)){
+        String[] requestHeader = Utils.getBufferLines(reader);
+        File requestedFile = Utils.getFile(requestHeader[1], ROOT);
+        Methods method =  Utils.getMethod(requestHeader[0]);
+
+        switch (method){
             case GET:
                 if(requestedFile.exists()){
                     bwlog.info("Serving: "+ requestedFile.getName() + " lfrom " + ROOT);
