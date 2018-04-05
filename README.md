@@ -1,6 +1,3 @@
-# BwarnerWebServer
-
-
 What is this?
 =======
 Working through a server problem as an academic exercise.  
