@@ -11,7 +11,7 @@ Caveats
 ##### Responses 
 At this point, the server will honor GET, HEAD, and TRACE.  I have an unrecognized case in there as well, but all other request types will return with 501.
 ##### Testing 
-In my research, I came across several examples that included some levels of build testing. I elected to forgo his based on the small project size.
+In my research, I came across several examples that included some levels of build testing. I elected to forgo this based on the small project size.
 ##### Organization and Enums 
 I referenced a few apache libraries because I didn't want to have to define my own enums.  I'm sure this is a debatable approach.  
 
