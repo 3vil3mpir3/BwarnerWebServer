@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 public class WebServer extends Thread {
 
-			/** logger **/
+			/** logger. **/
 			private static Logger bwlog = LogManager.getLogger(WebServer.class);
 
 			/** set defaults **/
